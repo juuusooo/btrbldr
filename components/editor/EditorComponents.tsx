@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Editor from '@monaco-editor/react'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { useDirectoryStore } from '@/stores/directoryStore'
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 
 const EditorComponent: React.FC = () => {
     const currentFile = useDirectoryStore((s) => s.currentFile)
@@ -22,6 +22,14 @@ const EditorComponent: React.FC = () => {
     const [value, setValue] = useState(currentFile?.content || '')
 
     useEffect(() => {
+        monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+            jsx: monaco.languages.typescript.JsxEmit.React,
+            target: monaco.languages.typescript.ScriptTarget.ESNext,
+            allowNonTsExtensions: true,
+            moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+            allowJs: true,
+        });
+
         setValue(currentFile?.content || '')
     }, [currentFile?.id]) // reset content when file changes
 
@@ -43,10 +51,6 @@ const EditorComponent: React.FC = () => {
                 value={value}
                 onChange={handleChange}
                 theme="vs-dark"
-                beforeMount={(monacoInstance) => {
-                    // optional: setup compiler options, extraLibs, etc.
-                    // you can also use the monaco import above here too
-                }}
                 options={{
                     fontSize: 14,
                     minimap: { enabled: false },

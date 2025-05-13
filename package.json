@@ -3,24 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev\" \"npm run tsserver\"",
+    "dev": "npm run next",
     "next": "next dev --turbopack",
     "electron": "electron electron/main.js",
-    "tsserver": "node server/tsserver.js",
     "dev:desktop": "concurrently \"npm run dev\" \"npm run electron\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@codingame/monaco-languageclient": "^0.17.4",
     "@monaco-editor/react": "^4.7.0",
     "monaco-editor": "^0.52.2",
-    "monaco-languageclient": "^9.6.0",
+    "net": "^1.0.2",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-resizable-panels": "^3.0.2",
     "typescript-language-server": "^4.3.4",
+    "vscode-jsonrpc": "^8.2.1",
     "vscode-languageserver-protocol": "^3.17.5",
     "vscode-ws-jsonrpc": "^3.4.0",
     "ws": "^8.18.2",
@@ -33,6 +34,7 @@
     "@types/react-dom": "^19",
     "concurrently": "^9.1.2",
     "electron": "^36.2.0",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "tailwindcss": "^4",
     "typescript": "^5.8.3"
   }
