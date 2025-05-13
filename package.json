@@ -3,22 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently \"npm run dev\" \"npm run tsserver\"",
+    "next": "next dev --turbopack",
+    "electron": "electron electron/main.js",
+    "tsserver": "node server/tsserver.js",
+    "dev:desktop": "concurrently \"npm run dev\" \"npm run electron\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "monaco-editor": "^0.52.2",
+    "monaco-languageclient": "^9.6.0",
+    "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.2"
+    "react-resizable-panels": "^3.0.2",
+    "typescript-language-server": "^4.3.4",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-ws-jsonrpc": "^3.4.0",
+    "ws": "^8.18.2",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "concurrently": "^9.1.2",
+    "electron": "^36.2.0",
+    "tailwindcss": "^4",
+    "typescript": "^5.8.3"
   }
 }
