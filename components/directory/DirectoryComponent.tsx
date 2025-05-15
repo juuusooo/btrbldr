@@ -84,23 +84,23 @@ const DirectoryComponent: React.FC = () => {
   }
 
   return (
-    <div className="border border-gray-300 p-2 mb-4">
+    <div className="border border-gray-700 bg-gray-900 text-white p-2 mb-4 flex flex-col h-full">
       <h2 className="text-xl font-semibold mb-2">File Browser</h2>
       {!root ? (
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-auto h-auto"
           onClick={handleOpenDirectory}
         >
           Open Directory
         </button>
       ) : (
-        <div>
+        <div className="flex-grow">
           <p className="mb-2">Current Directory: <span className="font-mono">{root.name}</span></p>
           <div className="mt-2">{renderItems(root.children || [])}</div>
         </div>
       )}
     </div>
-  )
+  )  
 }
 
 export default DirectoryComponent

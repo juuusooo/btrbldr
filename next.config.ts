@@ -1,20 +1,14 @@
-import type { NextConfig } from "next";
-import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
-
-const nextConfig: NextConfig = {
-  turbo: {
-    enabled: false,
-  },
-  webpack(config, { isServer }) {
+module.exports = {
+  webpack: (config: any, { isServer }: { isServer: boolean }) => {
+    // Only apply the fallback on the client side (because Monaco uses node-specific APIs)
     if (!isServer) {
-      config.plugins.push(
-        new MonacoWebpackPlugin({
-          languages: ['javascript', 'typescript', 'css', 'html'],
-        })
-      )
+      config.resolve.fallback = {
+        fs: false,
+        path: false,
+        os: false,
+      };
     }
-    return config
+
+    return config;
   },
 };
-
-export default nextConfig;

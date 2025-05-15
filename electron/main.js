@@ -1,33 +1,49 @@
-import { app, BrowserWindow } from 'electron';
-import path from 'path';
+import { app, BrowserWindow, ipcMain } from 'electron/main'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import path from 'path';
 
-console.log('Electron main process started!');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const createWindow = () => {
+function createWindow () {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 800,
+    height: 600,
     webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
     },
-  });
+  })
 
   win.loadURL('http://localhost:3000');
-};
+}
 
-app.whenReady().then(createWindow);
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+ipcMain.on('command', (event, command) => {
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      event.reply('command-output', `Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      event.reply('command-output', `stderr: ${stderr}`);
+      return;
+    }
+    event.reply('command-output', stdout);
+  });
 });
 
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+ipcMain.handle('read-file', async (event, filePath) => {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    return data;
+  } catch (err) {
+    return `Error reading file: ${err.message}`;
+  }
 });
+
+ipcMain.on('greet', (event, args) => {
+  console.log(args);
+});
+
+app.whenReady().then(createWindow)
